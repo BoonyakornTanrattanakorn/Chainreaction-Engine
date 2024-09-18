@@ -1,4 +1,5 @@
 import secrets
+import gameEngine
 
 class Player():
     def __init__(self, color):
@@ -39,6 +40,29 @@ class randomBot(Player):
     def generateMove(self, board):
         return secrets.choice(self.generateAllMoves(board))
 
+    def generateAllMoves(self, board):
+        if board.turn == 0:
+            return [(i, j) for j in range(len(board[0])) for i in range(len(board)) if board[i][j].color == '-']
+        else:
+            return [(i, j) for j in range(len(board[0])) for i in range(len(board)) if board[i][j].color == self.color]
+        
+
+class minimaxBot(Player):
+    def __init__(self, color):
+        super().__init__(color)
+        self.game = gameEngine.gameEngine()
+
+    def generateMove(self, board):
+        time_limit = 10
+        depth = 0
+        moves = [[e, []]]
+        while True:
+            break
+            prev_moves = moves[-2]
+            next_moves = moves[-1]
+            for move in prev_moves:
+                pass
+            
     def generateAllMoves(self, board):
         if board.turn == 0:
             return [(i, j) for j in range(len(board[0])) for i in range(len(board)) if board[i][j].color == '-']

@@ -4,25 +4,26 @@ import gameEngine
 from time import sleep
 import os
 
-while True:
-    game = gameEngine.gameEngine()
-    board = Board.Board(5, 5)
-    players = [Player.randomBot('r'), Player.randomBot('b')]
-    isRunning = True
-    while isRunning:
-        for player in players:
-            print(f"Current turn: {board.turn}")
-            print(f"It is player '{player.color}' turn.")
+game = gameEngine.gameEngine()
+board = Board.Board(5, 5)
+players = [Player.Player('r'), Player.randomBot('b')]
+isRunning = True
+while isRunning:
+    for player in players:
+        print(f"Current turn: {board.turn}")
+        print(f"It is player '{player.color}' turn.")
+        print("Score:")
+        for p in players:
+            print(f"{p.color} : {board.getPlayerValue(p)}")
+        print(board)
+        move = player.generateMove(board)
+        game.playMove(player, move, board)
+        if game.isWinner(player, board):
             print(board)
-            move = player.generateMove(board)
-            game.playMove(player, move, board)
-            sleep(0.2)
-            os.system('cls')
-            if game.isWinner(player, board):
-                print(board)
-                print(f"{board.turn} turns has elapsed! The game is over! Player '{player.color}' has won!")
-                isRunning = False
-                sleep(5)
-                break
+            print(f"{board.turn} turns has elapsed! The game is over! Player '{player.color}' has won!")
+            isRunning = False
+            break
+        sleep(0.5)
+        os.system('cls')
+    board.turn += 1
 
-        board.turn += 1
