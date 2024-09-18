@@ -4,26 +4,34 @@ import gameEngine
 from time import sleep
 import os
 
-game = gameEngine.gameEngine()
-player_list = [Player.randomBot('r'), Player.randomBot('b')]
-board = Board.Board(5, 5, player_list)
-isRunning = True
-while isRunning:
-    for player in players:
-        print(f"Current turn: {board.turn}")
-        print(f"It is player '{player.color}' turn.")
-        print("Score:")
-        for p in players:
-            print(f"{p.color} : {board.getPlayerValue(p)}")
-        print(board)
-        move = player.generateMove(board)
-        game.playMove(player, move, board)
-        if game.isWinner(player, board):
+wins = dict({'r':0, 'b':0})
+while True:
+    game = gameEngine.gameEngine()
+    player_list = [Player.randomBot('r'), Player.oneDepthMaxScoreBot('b')]
+    board = Board.Board(5, 5, player_list)
+    isRunning = True
+    while isRunning:
+        for i in range(len(player_list)):
+            print(f"Current turn: {board.turn}")
+            print(f"It is player '{board.getCurrentPlayer().color}' turn.")
+            print("Score:")
+            for p in board.player_list:
+                print(f"{p.color} : {board.getPlayerValue(p)}")
+            print("Wins:")
+            for p in board.player_list:
+                print(f"{p.color} : {wins[p.color]}")
             print(board)
-            print(f"{board.turn} turns has elapsed! The game is over! Player '{player.color}' has won!")
-            isRunning = False
-            break
-        sleep(0.5)
-        os.system('cls')
-    board.turn += 1
+            move = board.getCurrentPlayer().generateMove(board)
+            game.playMove(board.getCurrentPlayer(), move, board)
+            if game.isWinner(board.getCurrentPlayer(), board):
+                os.system('cls')
+                print(board)
+                print(f"{board.turn} turns has elapsed! The game is over! Player '{board.getCurrentPlayer().color}' has won!")
+                wins[board.getCurrentPlayer().color] += 1
+                isRunning = False
+                break
+            board.nextPlayer()
+            sleep(0)
+            os.system('cls')
+        board.turn += 1
 

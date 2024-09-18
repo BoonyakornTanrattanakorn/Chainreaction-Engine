@@ -20,9 +20,10 @@ class gameEngine():
     # (Player) player, (Board) board, move is a tuple (row, col)
     def playMove(self, player, move, board):
         if board.turn == 0:
-            board[move[0]][move[1]].color = player.color
-            board[move[0]][move[1]].value = 3
-            board.player_value[player.color] = 3
+            tile = board[move[0]][move[1]]
+            tile.color = player.color
+            tile.value = 3
+            board.player_value[player.color] += 3
         else:
             self.chainReaction(player, move, board)
 

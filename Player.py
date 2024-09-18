@@ -35,31 +35,49 @@ class Player():
                 return False
         return True
     
-
-# Choose a random move
-class randomBot(Player):
-    def __init__(self, color):
-        super().__init__(color)
-
-    def generateMove(self, board):
-        return secrets.choice(self.generateAllMoves(board))
-
-    def generateAllMoves(self, board):
-        if board.turn == 0:
-            return [(i, j) for j in range(len(board[0])) for i in range(len(board)) if board[i][j].color == '-']
-        else:
-            return [(i, j) for j in range(len(board[0])) for i in range(len(board)) if board[i][j].color == self.color]
-        
-
-class minimaxBot(Player):
-    def __init__(self, color):
-        super().__init__(color)
-        self.game = gameEngine.gameEngine()
-            
     def generateAllMoves(self, board):
         if board.turn == 0:
             return [(i, j) for j in range(len(board[0])) for i in range(len(board)) if board[i][j].color == '-']
         else:
             return [(i, j) for j in range(len(board[0])) for i in range(len(board)) if board[i][j].color == self.color]
     
-    def calculateMinimaxForDepth(self, board)
+
+# Always choose a random move
+class randomBot(Player):
+    def __init__(self, color):
+        super().__init__(color)
+
+    def generateMove(self, board):
+        return secrets.choice(self.generateAllMoves(board))
+        
+
+# Always choose move that maximize own score and minimize others score. Only search one depth. If there are several equal-scoring moves then choose random.
+class oneDepthMaxScoreBot(Player):
+    def __init__(self, color):
+        super().__init__(color)
+        self.game = gameEngine.gameEngine()
+
+    def generateMove(self, board):
+        moves = self.generateAllMoves(board)
+        max_score = - 10 ** 9
+        for move in moves:
+            move_value = self.moveValue(move, board, self)
+            if move_value < max_score:
+                continue
+            elif move_value == max_score:
+                max_score_moves.append(move)
+            else:
+                max_score = move_value
+                max_score_moves = [move]
+        return secrets.choice(max_score_moves)
+
+    def moveValue(self, move, board, player):
+        next_board = copy.deepcopy(board)
+        self.game.playMove(self, move, next_board)
+        value = 0
+        for p in board.player_list:
+            if p == player:
+                value += next_board.getPlayerValue(p) - board.getPlayerValue(p)
+            else:
+                value += board.getPlayerValue(p) - next_board.getPlayerValue(p)
+        return value

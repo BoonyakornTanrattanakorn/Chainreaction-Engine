@@ -5,14 +5,22 @@ class Board():
     def __init__(self, height, width, player_list):
         self.board = [[Tile() for j in range(width)] for i in range(height)]
         self.player_list = player_list
-        self.player_value = dict({'-': 0} + [(e, 0) for e in self.player_list])
+        self.player_value = dict([('-', 0)] + [(e.color, 0) for e in self.player_list])
+        self.current_player = 0
         self.turn = 0
 
-    
     def getPlayerValue(self, player):
         if self.turn == 0:
             return 0
         return self.player_value[player.color]
+    
+    def getCurrentPlayer(self):
+        return self.player_list[self.current_player]
+    
+    def nextPlayer(self):
+        self.current_player += 1
+        if self.current_player >= len(self.player_list):
+            self.current_player = 0
 
     # Attributes
     def __getitem__(self, idx):
