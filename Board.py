@@ -25,6 +25,7 @@ class Board():
     
     def __len__(self):
         return len(self.board)
+        
 
 # Hold color and value of a tile.
 class Tile():

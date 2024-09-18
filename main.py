@@ -6,7 +6,7 @@ import os
 
 game = gameEngine.gameEngine()
 board = Board.Board(5, 5)
-players = [Player.Player('r'), Player.randomBot('b')]
+players = [Player.randomBot('r'), Player.randomBot('b')]
 isRunning = True
 while isRunning:
     for player in players:
