@@ -2,11 +2,13 @@
 # Game state.
 # Should be as small as possible.
 class Board():
-    def __init__(self, height, width):
+    def __init__(self, height, width, player_list):
         self.board = [[Tile() for j in range(width)] for i in range(height)]
-        self.player_value = dict({'-': 0})
+        self.player_list = player_list
+        self.player_value = dict({'-': 0} + [(e, 0) for e in self.player_list])
         self.turn = 0
 
+    
     def getPlayerValue(self, player):
         if self.turn == 0:
             return 0

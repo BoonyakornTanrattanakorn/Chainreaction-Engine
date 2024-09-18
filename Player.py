@@ -7,6 +7,7 @@ import gameEngine
 class Player():
     def __init__(self, color):
         self.color = color
+        self.value = 0
 
     # Takes input
     def generateMove(self, board):
@@ -60,3 +61,5 @@ class minimaxBot(Player):
             return [(i, j) for j in range(len(board[0])) for i in range(len(board)) if board[i][j].color == '-']
         else:
             return [(i, j) for j in range(len(board[0])) for i in range(len(board)) if board[i][j].color == self.color]
+    
+    def calculateMinimaxForDepth(self, board)

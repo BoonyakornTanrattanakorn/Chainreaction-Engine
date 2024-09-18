@@ -5,8 +5,8 @@ from time import sleep
 import os
 
 game = gameEngine.gameEngine()
-board = Board.Board(5, 5)
-players = [Player.randomBot('r'), Player.randomBot('b')]
+player_list = [Player.randomBot('r'), Player.randomBot('b')]
+board = Board.Board(5, 5, player_list)
 isRunning = True
 while isRunning:
     for player in players:
